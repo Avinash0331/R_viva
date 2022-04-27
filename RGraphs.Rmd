@@ -1,0 +1,84 @@
+---
+title: "RGraphs"
+author: "me"
+date: "27/04/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r}
+#dataset
+data(BOD)
+BOD
+
+#create a canvas
+ggplot(data=BOD, mapping = aes(x=Time, y=demand))
+
+#plotting on the canvas (size is optional)
+ggplot(data=BOD, mapping = aes(x=Time, y=demand)) +
+  geom_point(size=3) +
+  geom_line(color="blue")
+
+#or
+
+ggplot(data=BOD, mapping = aes(Time,demand)) +
+  geom_point(size=3) +
+  geom_line(color="blue")
+```
+
+```{r}
+#dataset
+data("CO2")
+
+CO2
+
+#list different column names
+names(CO2)
+
+
+#take 2 columns for x and y then plot points for them and then based on column z given them a color, alpha value stands for opacity of color
+CO2 %>% 
+  ggplot(data = CO2, mapping =aes(conc,uptake,
+                                  color= Treatment))+
+  geom_point(size=3,alpha=0.5)+
+  geom_smooth()
+
+
+#applying a linear model and se stands for standard error and in facet wrap we can give another column name
+CO2 %>% 
+  ggplot(data = CO2, mapping =aes(conc,uptake,
+                                  color= Treatment))+
+  geom_point(size=3,alpha=0.5)+
+  geom_smooth(method =lm,se=F)+
+  facet_wrap(~Type)+
+  labs(title = "Concentration of CO2")
+
+```
+
+
+```{r}
+
+#drawing a boxplot using 2 columns and then mapping points on it and size based on 3rd column and color based on 4th
+#coord flip rotates the graph
+ggplot(data= CO2, mapping=aes(Treatment,uptake))+
+  geom_boxplot()+
+  geom_point(alpha=0.3,
+    aes(size=conc,color=Plant))+
+  coord_flip()
+
+
+#adding facet wrap to include all 5 columns
+ggplot(data= CO2, mapping=aes(Treatment,uptake))+
+  geom_boxplot()+
+  geom_point(alpha=0.3,
+    aes(size=conc,color=Plant))+
+  facet_wrap(~Type)+
+  coord_flip()
+
+```
+
+
