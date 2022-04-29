@@ -82,3 +82,84 @@ ggplot(data= CO2, mapping=aes(Treatment,uptake))+
 ```
 
 
+```{r}
+
+mpg
+
+
+mpg %>% 
+  filter(cty<20) %>% 
+ggplot(data=mpg, mapping=aes(displ,cty))+
+  geom_point(aes(color=drv,
+                 size=trans),
+             alpha=0.5)+
+  geom_smooth(method=lm,se=F)+
+  facet_wrap(~year,nrow=2)
+```
+
+
+
+```{r}
+names(msleep)
+
+
+#Single Categprical Variable will give us a barplot
+
+msleep %>% 
+  drop_na(vore) %>% 
+  ggplot(mapping=aes(x=vore))+
+  geom_bar(fill="#97B3C6")+
+  labs(Y="Vore")+
+  theme_bw()
+
+
+#Single numeric variable will give us a histogram
+
+msleep$awake
+
+
+msleep %>% 
+  ggplot(mapping=aes(x=awake))+
+  geom_histogram(binwidth = 2,fill="#97B000")
+```
+```{r}
+starwars
+
+
+starwars %>% 
+  filter(hair_color %in% c("black", "brown")) %>% 
+  drop_na(sex) %>% 
+  ggplot(mapping=aes(x=hair_color,fill=sex))+
+  geom_bar(position = "dodge")+
+  labs(title = "Gender and hair color",
+       x="Hair color",
+       y="Number")
+
+
+
+#for same result we could have done
+starwars %>% 
+  filter(hair_color %in% c("black","brown")) %>% 
+  drop_na(sex) %>% 
+  ggplot(aes(sex))+
+  geom_bar(aes(fill=sex))+
+  facet_wrap(~hair_color)
+```
+
+
+
+```{r}
+#boxplots
+
+#both categorical variables can be used or one categorical and one numeric
+
+msleep %>% 
+  drop_na(vore) %>% 
+  ggplot(aes(vore,sleep_total))+
+  geom_boxplot()+
+  coord_flip()+
+  theme_bw()
+
+```
+
+
